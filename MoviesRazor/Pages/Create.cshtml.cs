@@ -12,10 +12,12 @@ namespace MoviesRazor.Pages
     public class CreateModel : PageModel
     {
         private readonly MoviesRazor.Models.MovieContext _context;
-
-        public CreateModel(MoviesRazor.Models.MovieContext context)
+        
+        IWebHostEnvironment _appEnvironment;
+        public CreateModel(MoviesRazor.Models.MovieContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         public IActionResult OnGet()
@@ -25,7 +27,10 @@ namespace MoviesRazor.Pages
 
         [BindProperty]
         public Movie Movie { get; set; } = default!;
-        
+
+        [BindProperty]
+        public IFormFile Poster { get; set; } = default!;
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -35,9 +40,21 @@ namespace MoviesRazor.Pages
                 return Page();
             }
 
-            _context.Movies.Add(Movie);
-            await _context.SaveChangesAsync();
+            if (Poster != null)
+            {
+                // Путь к папке Files
+                string path = "/Image/" + Poster.FileName; // имя файла
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await Poster.CopyToAsync(fileStream); // копируем файл в поток
+                }
 
+                Movie.Poster = "~" + path;
+                _context.Movies.Add(Movie);
+                await _context.SaveChangesAsync();
+
+               
+            }
             return RedirectToPage("./Index");
         }
     }

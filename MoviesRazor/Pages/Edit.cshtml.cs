@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,18 @@ namespace MoviesRazor.Pages
     public class EditModel : PageModel
     {
         private readonly MoviesRazor.Models.MovieContext _context;
-
-        public EditModel(MoviesRazor.Models.MovieContext context)
+        IWebHostEnvironment _appEnvironment;
+        public EditModel(MoviesRazor.Models.MovieContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         [BindProperty]
         public Movie Movie { get; set; } = default!;
+
+        [BindProperty]
+        public IFormFile Poster { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -42,11 +47,25 @@ namespace MoviesRazor.Pages
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+
+            if (Poster != null)
+            {
+                // Путь к папке Files
+                string path = "/Image/" + Poster.FileName; // имя файла
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await Poster.CopyToAsync(fileStream); // копируем файл в поток
+                }
+                Movie.Poster = "~" + path;
+            }
+
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+           
             _context.Attach(Movie).State = EntityState.Modified;
 
             try
