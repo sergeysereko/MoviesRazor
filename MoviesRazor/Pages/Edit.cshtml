@@ -6,9 +6,7 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Movie</h4>
+<h1>Редактирование фильма</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,44 +14,45 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Movie.Id" />
             <div class="form-group">
-                <label asp-for="Movie.Name" class="control-label"></label>
+                <label asp-for="Movie.Name" class="control-label">Название</label>
                 <input asp-for="Movie.Name" class="form-control" />
                 <span asp-validation-for="Movie.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.Director" class="control-label"></label>
+                <label asp-for="Movie.Director" class="control-label">Режисер</label>
                 <input asp-for="Movie.Director" class="form-control" />
                 <span asp-validation-for="Movie.Director" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.Genre" class="control-label"></label>
+                <label asp-for="Movie.Genre" class="control-label">Жанр</label>
                 <input asp-for="Movie.Genre" class="form-control" />
                 <span asp-validation-for="Movie.Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.Year" class="control-label"></label>
+                <label asp-for="Movie.Year" class="control-label">Год</label>
                 <input asp-for="Movie.Year" class="form-control" />
                 <span asp-validation-for="Movie.Year" class="text-danger"></span>
             </div>
+            <br/>
             <div class="form-group">
-                <label asp-for="Movie.Poster" class="control-label"></label>
-                <input asp-for="Movie.Poster" class="form-control" />
-                <span asp-validation-for="Movie.Poster" class="text-danger"></span>
+                <label asp-for="Movie.Poster" class="control-label">Постер</label>
+                <input type="file" name="Poster" /><br>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.Description" class="control-label"></label>
-                <input asp-for="Movie.Description" class="form-control" />
+                <label asp-for="Movie.Description" class="control-label">Описание</label>
+                <textarea asp-for="Movie.Description" class="form-control"></textarea>
                 <span asp-validation-for="Movie.Description" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index" class="links">Вернуться на Главную</a>
 </div>
 
 @section Scripts {
