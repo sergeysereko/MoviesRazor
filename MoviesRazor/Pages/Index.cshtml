@@ -4,7 +4,26 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<header>
+    <div class="menu">
+        <a asp-page="Admin" class="admin">Админка</a>
+    </div>
+    <div>
+        <label class="header">Топ 10 фильмов</label>
+    </div>
+</header>
+
+@foreach (var item in Model.Movie)
+{
+    <div class="movie">
+
+        <div class="image"><img class="img" src="@Url.Content(@item.Poster)" alt="@item.Name"></div>
+        <div class="details">
+            <p class="name">@item.Name</p>
+            <p><span class="desc">Режисер: </span>@item.Director</p>
+            <p><span class="desc">Жанр: </span> @item.Genre</p>
+            <p><span class="desc">Год: </span> @item.Year</p>
+            <p><span class="desc">Описание: </span>@item.Description</p>
+        </div>
+    </div>
+}

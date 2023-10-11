@@ -1,20 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MoviesRazor.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MoviesRazor.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly MovieContext db;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(MovieContext context)
         {
-            _logger = logger;
+            db = context;
         }
 
-        public void OnGet()
+        public IList<Movie> Movie { get; set; } = default!;
+        public async Task OnGetAsync()
         {
+            if (db.Movies != null)
+            {
+                Movie = await db.Movies.ToListAsync();
 
+            }
         }
     }
 }
