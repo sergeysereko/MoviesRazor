@@ -1,4 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using MoviesRazor.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Получаем строку подключения из файла конфигурации
+string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// добавляем контекст ApplicationContext в качестве сервиса в приложение
+builder.Services.AddDbContext<MovieContext>(options => options.UseSqlServer(connection));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
